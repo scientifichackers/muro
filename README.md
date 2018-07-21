@@ -43,8 +43,10 @@ Hardware -
 
 ## Install
 
--   change `PINS` dict according to your circuit in `config.py`
--   change wifi credentials in `config.py`
+- Edit [config.py](muro/common/config.py), notably:
+    - Change `PINS` dict according to your circuit.
+    - `SSID` and `PASSWD`.
+    - `MUSIC_APP` according to your music player. Spotify by default.
 
 ```s
 $ git clone https://github.com/pycampers/muro
