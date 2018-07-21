@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pulsectl = "*"
+click = "*"
+zproc = "*"
+mpy-cross = "*"
+adafruit-ampy = "*"
+"jinja2" = "*"
+muro = {editable = true, path = "."}
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
