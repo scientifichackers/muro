@@ -46,10 +46,11 @@ Hardware -
 -   change `PINS` dict according to your circuit in `config.py`
 -   change wifi credentials in `config.py`
 
-```sh
-$ pip install muro
+```s
+$ git clone https://github.com/pycampers/muro
+$ cd muro
+$ pip install -e .
 
 $ muro install
-
 $ muro run
 ```
