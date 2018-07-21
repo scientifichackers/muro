@@ -15,7 +15,7 @@ COMPILE_DIR = Path.cwd() / ".compiled"
 AUTO_START_PATH = Path.home() / ".config" / "autostart" / "muro.desktop"
 THIS_DIR = Path(__file__).parent
 MPY_DIR = THIS_DIR / "micropython"
-MPY_WORKER_TEMPLATE = THIS_DIR / "mpy_worker.py"
+CLI_WORKER_TEMPLATE = THIS_DIR / "cli_worker.py"
 COMMON_DIR = THIS_DIR / "common"
 PROJECT_FILES = [*MPY_DIR.rglob("*.py"), *COMMON_DIR.rglob("*.py")]
 
@@ -86,7 +86,7 @@ class File:
 
 
 def create_mpy_code(project_files: List[File]) -> str:
-    with open(MPY_WORKER_TEMPLATE, "r") as fp:
+    with open(CLI_WORKER_TEMPLATE, "r") as fp:
         return Template(fp.read()).render(
             required_dirs={file.dir_path_on_board for file in project_files},
             required_files={file.path_on_board for file in project_files},
