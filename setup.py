@@ -21,7 +21,15 @@ REQUIRES_PYTHON = ">=3.6.0"
 VERSION = "0.0.1"
 
 # What packages are required for this module to be executed?
-REQUIRED = ["click", "pulsectl", "zproc", "jinja2", "mpy-cross", "adafruit-ampy"]
+REQUIRED = [
+    "click",
+    "pulsectl",
+    "zproc",
+    "jinja2",
+    "mpy-cross",
+    "adafruit-ampy",
+    "numpy",
+]
 
 # The rest you shouldn't have to touch too much :)
 # ------------------------------------------------

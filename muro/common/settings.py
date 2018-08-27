@@ -7,11 +7,13 @@ MUSIC_APP = {
     "playerctl": "spotify",  # name as it appears in playerctl
 }
 
+SEEK_TIMEOUT = 0.5  # timeout for switching to seek mode
+
 # MicroPython
 SSID = "Here"
 PASSWD = "fevistick"
 
-SPEED = 2  # speed of sensor read from 1 to 7
+SPEED = 3  # speed of sensor read from 1 to 7 (3 seems to be a sweet spot)
 
 MAX_POTENTIOMETER = 20000  # max value of the potentiometer reading
 MIN_VOL = 15  # min vol in %

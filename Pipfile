@@ -6,11 +6,11 @@ name = "pypi"
 [packages]
 pulsectl = "*"
 click = "*"
-zproc = "*"
 mpy-cross = "*"
 adafruit-ampy = "*"
 "jinja2" = "*"
 muro = {editable = true, path = "."}
+numpy = "*"
 
 [dev-packages]
 

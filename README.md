@@ -12,14 +12,14 @@ _muro stands **Mu**sic **R**em**o**te._
 
 ## Features
 
--   play / pause
--   skip to next / previous track
--   seek forward / backward.  
-    (by pressing next / previous track button for more than ~0.5 sec)
--   primary and secondary volume control.  
-    (using custom primary / secondary selection algorithm)
--   Extremely minimal (close to 0) CPU usage
--   Leave it in auto-start and forget!
+- play / pause
+- skip to next / previous track
+- seek forward / backward.  
+  (by pressing next / previous track button for more than ~1 sec)
+- primary and secondary volume control.  
+  (using custom primary / secondary selection algorithm)
+- Extremely minimal (close to 0) CPU usage
+- Leave it in auto-start and forget!
 
 ## Requirements
 
@@ -43,7 +43,7 @@ Hardware -
 
 ## Install
 
-- Edit [config.py](muro/common/config.py), notably:
+- Edit [config.py](muro/common/settings.py), notably:
     - Change `PINS` dict according to your circuit.
     - `SSID` and `PASSWD`.
     - `MUSIC_APP` according to your music player. Spotify by default.
