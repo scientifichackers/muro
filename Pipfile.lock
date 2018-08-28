@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a16522b089410606081aaf965aa56103f319b1b2109510f6ab07ae94fecc373d"
+            "sha256": "be5e58553fc9af609ad0ee5c5f38f779af9c961174d9f039a722ac4fe25f6d20"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,21 @@
             "index": "pypi",
             "version": "==6.7"
         },
+        "colorama": {
+            "hashes": [
+                "sha256:463f8483208e921368c9f306094eb6f725c6ca42b0f97e313cb5d5512459feda",
+                "sha256:48eb22f4f8461b1df5734a074b57042430fb06e1d61bd1e11b078c0fe6d7a1f1"
+            ],
+            "version": "==0.3.9"
+        },
+        "crayons": {
+            "hashes": [
+                "sha256:5e17691605e564d63482067eb6327d01a584bbaf870beffd4456a3391bd8809d",
+                "sha256:6f51241d0c4faec1c04c1c0ac6a68f1d66a4655476ce1570b3f37e5166a599cc"
+            ],
+            "index": "pypi",
+            "version": "==0.1.2"
+        },
         "jinja2": {
             "hashes": [
                 "sha256:74c935a1b8bb9a3947c50a54766a969d4846290e1e788ea44c1392163723c3bd",
@@ -55,10 +70,6 @@
             ],
             "index": "pypi",
             "version": "==1.9.4"
-        },
-        "muro": {
-            "editable": true,
-            "path": "."
         },
         "numpy": {
             "hashes": [
@@ -171,11 +182,11 @@
         },
         "zproc": {
             "hashes": [
-                "sha256:3f15dd17f154dba79ecf5087420e3bf7df27a1e136531d21f268ff291c23e675",
-                "sha256:f56d6dde3d24cead67a7a458ad00d3794be9529b339ffe6a6878fa521e498886"
+                "sha256:5d95b404ba2299df513a23fdfb65107e7214656468da60eca252435c246b34ac",
+                "sha256:e7a6b25050b47bf764fc1ca9ec8e92523af04ac61162be75bad02df33ccc0612"
             ],
-            "markers": "python_version != '3.2*' and python_version >= '2.7' and python_version != '3.1*' and python_version != '3.0*'",
-            "version": "==0.9.0"
+            "index": "pypi",
+            "version": "==0.9.1"
         }
     },
     "develop": {}

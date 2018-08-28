@@ -4,13 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pulsectl = "*"
 click = "*"
+crayons = "*"
 mpy-cross = "*"
 adafruit-ampy = "*"
 "jinja2" = "*"
-muro = {editable = true, path = "."}
-numpy = "*"
+numpy="*"
+pulsectl = "*"
+zproc = "*"
 
 [dev-packages]
 

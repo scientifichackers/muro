@@ -44,7 +44,6 @@ class Peer:
         namespace: str = ":)",
         retry_for: tuple = (),
         retry_delay: float = 5.0,
-        # latency: float = 0.25
     ):
         """
         :param ssid: (Optional) SSID of a WIFI connection.
@@ -88,22 +87,39 @@ class Peer:
         return ap_if.isconnected() or sta_if.isconnected()
 
     @micropython_only
-    def wait_for_network(self, num_tries=-1, freq=1):
-        count = 0
-        loop_sec = 1 / freq
-        print("Waiting for network...", end="")
-        while not self.connected:
-            count += 1
-            sleep(loop_sec)
-
-            if 0 < num_tries < count:
-                print()
-                return
-            else:
-                print("%s..." % count, end="")
+    def _configure_network(self):
+        if self.enable_ap:
+            ap_if.active(True)
+        if self.ssid is not None:
+            sta_if.active(True)
+            sta_if.scan()
+            sta_if.disconnect()
+            sta_if.connect(self.ssid, self.passwd)
 
     @micropython_only
-    def _connect(self):
+    def wait_for_network(self, *, max_tries=None, refresh_freq_hz=1):
+        wait_sec = 1 / refresh_freq_hz
+        print("Waiting for network...", end="")
+
+        count = 0
+        while not self.connected:
+            count += 1
+            sleep(wait_sec)
+
+            if max_tries is not None and count > max_tries:
+                print()
+                if not self.connected:
+                    raise OSError(
+                        "Couldn't establish a connection even after {} tries.".format(
+                            max_tries
+                        )
+                    )
+                return
+            else:
+                print("{}...".format(count), end="")
+
+    @micropython_only
+    def _connect_network(self):
         print(
             "Connecting to network… (ssid: {} passwd: {} AP: {})".format(
                 repr(self.ssid), repr(self.passwd), self.enable_ap
@@ -112,26 +128,23 @@ class Peer:
 
         while True:
             try:
-                if self.enable_ap:
-                    ap_if.active(True)
-
-                if self.ssid is not None:
-                    sta_if.active(True)
-                    sta_if.scan()
-                    sta_if.disconnect()
-                    sta_if.connect(self.ssid, self.passwd)
-
-                self.wait_for_network()
+                self._configure_network()
+                self.wait_for_network(max_tries=50)
             except self.retry_for as e:
                 self._handle_error(e)
-                self._disconnect()
+                self._disconnect_network()
             else:
                 print("Connected to network!")
                 return
 
+    @micropython_only
+    def _disconnect_network(self):
+        ap_if.active(False)
+        sta_if.active(False)
+
     def connect(self):
         self.disconnect()
-        self._connect()
+        self._connect_network()
 
         self.recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.recv_sock.bind((LOCAL_HOST, self.port))
@@ -141,13 +154,8 @@ class Peer:
         if not MICROPYTHON:
             self.send_sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-    @micropython_only
-    def _disconnect(self):
-        ap_if.active(False)
-        sta_if.active(False)
-
     def disconnect(self):
-        self._disconnect()
+        self._disconnect_network()
 
         if self.send_sock is not None:
             self.send_sock.close()

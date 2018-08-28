@@ -1,32 +1,31 @@
-# Common settings
-UDP_PORT = 45123
+udp_port = 45123
 
-# CPython
-MUSIC_APP = {
-    "pulseaudio": "Spotify",  # name as it appears in pulseaudio
-    "playerctl": "spotify",  # name as it appears in playerctl
-}
 
-SEEK_TIMEOUT = 0.5  # timeout for switching to seek mode
+class Wifi:
+    ssid = "Here"
+    password = "fevistick"
 
-# MicroPython
-SSID = "Here"
-PASSWD = "fevistick"
+    enable_ap = False
 
-SPEED = 3  # speed of sensor read from 1 to 7 (3 seems to be a sweet spot)
 
-MAX_POTENTIOMETER = 20000  # max value of the potentiometer reading
-MIN_VOL = 15  # min vol in %
-MAX_VOL = 150  # max vol in %
-VOL_MIN_STEP = 2  # min step of volume
+class Buttons:
+    seek_timeout = 0.25  # timeout for switching to seek mode
 
-PINS = {
-    "SDA": 4,  # D2
-    "SCL": 5,  # D1
-    "ALERT": 0,  # D3
-    "SECONDARY": 0,  # A0
-    "PRIMARY": 3,  # A1
-    "NEXT": 14,  # D5
-    "PREV": 12,  # D6
-    "PAUSE": 13,  # D7
-}
+    next = 14  # D5
+    prev = 12  # D6
+    pause = 13  # D7
+
+
+class Dials:
+    read_speed = 3  # between 1 and 7 (3 seems to be a sweet spot)
+
+    # sda/scl Buttons
+    sda = 4  # D2
+    scl = 5  # D1
+
+    # Dials port number
+    volume = 3
+    brigtness = 0
+
+    volume_range = (15, 150)
+    brightness_range = (0, 100)
