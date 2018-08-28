@@ -19,11 +19,11 @@ class Buttons:
 class Dials:
     read_speed = 3  # between 1 and 7 (3 seems to be a sweet spot)
 
-    # sda/scl Buttons
+    # sda/scl for I2C
     sda = 4  # D2
     scl = 5  # D1
 
-    # Dials port number
+    # ADC pin number
     volume = 3
     brigtness = 0
 
