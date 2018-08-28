@@ -23,7 +23,7 @@ It gives you back the control of your music from clunky UIs, back to the simple,
 ## Requirements
 
 Software:
-- `amixer`
+- `pulseaudio`
 - `playerctl`
 - `xbacklight` 
 - Python >= 3.6
