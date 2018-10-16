@@ -135,21 +135,24 @@ def install(port, force):
         project_files = [File(file_path) for file_path in PROJECT_FILES]
         mpy_code = create_mpy_code(project_files)
 
-        print(f'Preparing board @ "{port}"...')
+        print(f"Preparing board @ {repr(port)}...")
         code_output = run_code_on_board(port, mpy_code)
         code_output = map(int, code_output.strip().split())
 
         for file, did_change in zip(project_files, code_output):
             if int(did_change) or force:
-                print(f"Transferring {file.path}...")
+                print(f"Transferring {repr(str(file.path))}...")
                 run_ampy_cmd(port, ["put", file.path_compiled, file.path_on_board])
     finally:
         clean_compiled()
 
-    print('Configuring "main.py"...')
+    print("Configuring 'main.py'...")
     save_code_on_board(
-        port, "from muro.micropython.muro import mainloop\nmainloop()", "main.py"
+        port, "from muro.micropython.muro import main\nmain()", "main.py"
     )
+
+    print("Performing a hard-reset...")
+    run_ampy_cmd(port, ["reset", "--hard"])
 
     if click.confirm("Add `muro run` to auto-start?", default=False):
         print(f"Adding to auto-start... ({AUTO_START_PATH})")
@@ -167,9 +170,9 @@ def install(port, force):
 def run():
     """Run muro"""
 
-    from muro.muro import mainloop
+    from muro.muro import main
 
-    mainloop()
+    main()
 
 
 ###########################################

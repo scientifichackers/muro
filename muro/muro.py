@@ -1,9 +1,11 @@
+import struct
 import subprocess
 from pprint import pprint
 from time import sleep
 from typing import Iterable, Union
-import pulsectl
+
 import numpy as np
+import pulsectl
 import zproc
 
 from muro.common import settings, unetwork
@@ -11,9 +13,23 @@ from muro.util import Logger
 
 log = Logger()
 
+structfmt = ">" + "i" * 2 + "B" * 3
+
+
+def unpack(bytes_data):
+    data = struct.unpack(structfmt, bytes_data)
+
+    return {
+        "volume": data[0],
+        "brightness": data[1],
+        "pause": data[2],
+        "next": data[3],
+        "previous": data[4],
+    }
+
 
 def send_command_to_player(*cmd):
-    cmd = ["playerctl", *cmd]
+    cmd = ["playerctl", "--all-players", *cmd]
     log.cmd_info(cmd)
     return subprocess.Popen(cmd)
 
@@ -48,33 +64,34 @@ class LastValueIterator:
         return self._last_val
 
 
-def mainloop():
+def main():
     ctx = zproc.Context(wait=True, retry_for=(Exception,))
 
-    ctx.state.setdefault("volume", 100)
-    ctx.state.setdefault("brightness", 100)
+    ctx.state["volume"] = 100
+    ctx.state["brightness"] = 100
 
     @ctx.process
     def network(state):
         with unetwork.Peer(settings.udp_port) as peer:
             while True:
-                data = peer.recv_json()[0]
-                state.update(data)
+                dict_data = unpack(peer.recv()[0])
+                log.debug(dict_data)
+                state.update(dict_data)
 
     @ctx.process
     def update_volume(state):
-
         with pulsectl.Pulse("muro-volume") as pulse:
             while True:
-                set_volume(pulse, state.get_when_change("volume"))
+                volume = state.get_when_change("volume")["volume"]
+                set_volume(pulse, volume)
 
-    @ctx.call_when_change("pause", stateful=False, live=False)
-    def play_pause():
+    @ctx.call_when_change("pause", stateful=False)
+    def play_pause(_):
         send_command_to_player("play-pause")
 
-    @ctx.call_when_change("brightness")
-    def update_brightness(state):
-        set_brightness(state["brightness"])
+    @ctx.call_when_change("brightness", stateful=False)
+    def update_brightness(snapshot):
+        set_brightness(snapshot["brightness"])
 
     def seek_btn_process_gen(key, cmd, seek_range):
         if cmd == "next":
@@ -91,8 +108,9 @@ def mainloop():
             )
 
         @ctx.call_when_equal(key, True)
-        def seek_btn_process(state):
+        def seek_btn_process(_, state):
             log.debug(f"{key} btn pressed")
+
             try:
                 state.get_when_equal(key, False, timeout=settings.Buttons.seek_timeout)
                 send_command_to_player(cmd)
@@ -108,6 +126,6 @@ def mainloop():
             log.debug(f"{key} btn released")
 
     seek_btn_process_gen("next", "next", (2, 10))
-    seek_btn_process_gen("prev", "previous", (3, 10))
+    seek_btn_process_gen("previous", "previous", (3, 10))
 
     pprint(ctx.process_list)
